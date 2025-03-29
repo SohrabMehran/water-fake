@@ -1,9 +1,9 @@
 from flask import Flask, request
-from flask_cors import CORS  # اینو اضافه کن
+from flask_cors import CORS
 import sqlite3
 
 app = Flask(__name__)
-CORS(app)  # این CORS رو فعال می‌کنه
+CORS(app)
 
 # ساخت دیتابیس
 conn = sqlite3.connect("ips.db")
@@ -18,6 +18,14 @@ def log_ip():
     conn.commit()
     conn.close()
     return "IP stored!"
+
+@app.route('/get-ips', methods=['GET'])
+def get_ips():
+    conn = sqlite3.connect("ips.db")
+    cursor = conn.execute("SELECT ip FROM users")
+    ips = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    return {"ips": ips}
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
